@@ -28,20 +28,33 @@ package "git" do
   action :install
 end
 
-template "mailsend.install" do
-  path "#{node['alert']['dir']}/alert.conf"
-  source "mailsend.install.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-end
-
-bash "error_alert" do
+bash "install_mailsend" do
   user "root"
   cwd "#{node['alert']['dir']}"
   code <<-EOH
-  git clone https://github.com/gsntn/logsearch
-  cp ./logsearch/logsearch.sh ./
-  ./logsearch.sh "#{node['alert']['dir']}/#{node['alert']['file']}"
+  git clone "#{node['mailsend']['git']}"
+  cd mailsend
+  tar -xzf "#{node['mailsend']['name']}"
+  cd "#{node['mailsend']['dir']}"
+  ./configure
+  make && make install
   EOH
+end
+
+
+bash "download_alert" do
+  user "root"
+  cwd "#{node['alert']['dir']}"
+  code <<-EOH
+  	git clone https://github.com/gsntn/logsearch
+        cp ./logsearch/logsearch.sh ./
+  EOH
+end
+
+cron "cron_alert" do
+  minute "0"
+  hour "0"
+  day "1"
+  month "1"
+  command "bash #{node['alert']['dir']}/logsearch.sh #{node['log']['dir']}/#{node['log']['file']} #{node['mail']['server']} #{node['mail']['to']} #{node['mail']['from']}"
 end

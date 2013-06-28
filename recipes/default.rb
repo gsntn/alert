@@ -1,21 +1,8 @@
 #
-# Cookbook Name:: alert
-# Recipe:: default
+# Cookbook Name:: log search alert
+# Recipe:: alert
 #
-# Copyright 2013, Example Com
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-# 
-#     http://www.apache.org/licenses/LICENSE-2.0
-# 
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+
 package "build-essential" do
   action :install
 end
@@ -35,18 +22,26 @@ bash "install_mailsend" do
   git clone "#{node['mailsend']['git']}"
   cd mailsend
   tar -xzf "#{node['mailsend']['name']}"
+  cd "#{node['mailsend']['dir']}"
   ./configure
   make && make install
   EOH
 end
 
 
-bash "error_alert" do
+bash "download_alert" do
   user "root"
   cwd "#{node['alert']['dir']}"
   code <<-EOH
-  git clone https://github.com/gsntn/logsearch
-  cp ./logsearch/logsearch.sh ./
-  ./logsearch.sh "#{node['alert']['dir']}/#{node['alert']['file']}"
+  	git clone https://github.com/gsntn/logsearch
+        cp ./logsearch/logsearch.sh ./
   EOH
+end
+
+cron "cron_alert" do
+  minute "0"
+  hour "0"
+  day "1"
+  month "1"
+  command "bash #{node['alert']['dir']}/logsearch.sh #{node['log']['dir']}/#{node['log']['file']} #{node['mail']['server']} #{node['mail']['to']} #{node['mail']['from']}"
 end
