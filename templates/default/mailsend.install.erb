@@ -1,0 +1,5 @@
+git clone <%= node[:mailsend][:git] %>
+cd mailsend
+tar -xzf <%= node[:mailsend][:name] %>
+./configure
+make && make install

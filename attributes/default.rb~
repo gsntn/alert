@@ -1,0 +1,2 @@
+default[:alert][:dir]       = "/home/ubuntu"
+default[:alert][:file]       = "log.txt"

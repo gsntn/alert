@@ -1,0 +1,5 @@
+git clone https://github.com/gsntn/mailsend
+cd mailsend
+tar -xzf mailsend-1.17b12.tar.gz
+./configure
+make && make install
