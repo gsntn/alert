@@ -8,15 +8,16 @@ All included in cookbook
 
 Attributes
 ==========
-default[:log][:dir]       = Directory where log file is located '\n'
-default[:log][:file]       = log file name '\n'
-default[:alert][:dir]       = Directory where alert would be deployed '\n'
-default[:mail][:server]       = smtp server '\n'
-default[:mail][:from]       = email from attribute '\n'
-default[:mail][:to]       = email to attribute '\n'
-default[:mailsend][:git]       = "https://github.com/gsntn/mailsend" '\n'
-default[:mailsend][:name]       = "mailsend-1.17b12.tar.gz" '\n'
-default[:mailsend][:dir]       = "mailsend-1.17b12" '\n'
+default[:log][:dir]       = Directory where log file is located  
+default[:log][:file]       = log file name  
+default[:alert][:dir]       = Directory where alert would be deployed  
+default[:mail][:server]       = smtp server  
+default[:mail][:from]       = email from attribute  
+default[:mail][:to]       = email to attribute  
+default[:mailsend][:git]       = "https://github.com/gsntn/mailsend"  
+default[:mailsend][:name]       = "mailsend-1.17b12.tar.gz"  
+default[:mailsend][:dir]       = "mailsend-1.17b12"  
+
 
 Usage
 =====
